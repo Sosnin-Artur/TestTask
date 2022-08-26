@@ -44,9 +44,10 @@ public class Mover : BaseMover
             yield return waiter;
             
             if (UnityEngine.Random.value <= _appearencePercent)
-            {                
-                var movablObject = Instantiate(CurrentObject, Points[0].position, Quaternion.identity);                
-                //var movablObject =  
+            {                                
+                var movablObject =  _movableObjectsFactory.Create();
+                movablObject.transform.position = Points[0].position;
+                movablObject.transform.SetParent(transform);
                 movablObject.gameObject.SetActive(true);
                 movablObject.Points = Points;
                 movablObject.StartMove();

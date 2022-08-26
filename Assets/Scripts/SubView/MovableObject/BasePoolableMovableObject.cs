@@ -10,7 +10,7 @@ public abstract class BasePoolableMovableObject : BaseMovableObject, IPoolable<I
 
     public virtual void OnDespawned()
     {
-        _pool = null;
+        _pool = null;        
         Agent.isStopped = true;
         Agent.ResetPath();
     }
@@ -18,6 +18,6 @@ public abstract class BasePoolableMovableObject : BaseMovableObject, IPoolable<I
     public virtual void OnSpawned(IMemoryPool pool)
     {        
         _pool = pool;
-        //StartMove();
+        CurrentPointIndex = 0;        
     }    
 }
