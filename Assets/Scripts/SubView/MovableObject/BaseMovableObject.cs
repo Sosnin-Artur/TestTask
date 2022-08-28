@@ -13,19 +13,24 @@ public abstract class BaseMovableObject : MonoBehaviour
 
     public NavMeshAgent Agent => _agent;
     
-    public List<Transform> Points { get; set; }        
-    
-    public bool IsReady { get; private set; }
+    public List<Transform> Points { get; set; }            
     
     public void StartMove()
-    {
-        IsReady = true;
+    {        
         _agent.destination = Points[CurrentPointIndex].position;                
     }
 
+    public void Reset() 
+    {
+        Agent.isStopped = true;
+        Agent.ResetPath();
+        CurrentPointIndex = 1;        
+        transform.position = Points[0].position;        
+    }
+    
     protected virtual void OnTriggerEnter(Collider other) 
     {        
-        if (IsReady && Points[CurrentPointIndex] == other.gameObject.transform)        
+        if (Points[CurrentPointIndex] == other.gameObject.transform)        
         {
             OnPointReaching();            
         }

@@ -2,7 +2,7 @@ using System.Net.Cache;
 using System;
 using Zenject;
 
-public abstract class BasePoolableMovableObject : BaseMovableObject, IPoolable<IMemoryPool>
+public abstract class BasePoolableObstacleMovableObject : BaseObstacleMovableObject, IPoolable<IMemoryPool>
 {    
     private IMemoryPool _pool;
 

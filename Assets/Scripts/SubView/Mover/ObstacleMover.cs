@@ -6,7 +6,7 @@ using UnityEngine;
 using Zenject;
 using CoroutineWrapper;
 
-public class Mover : BaseMover
+public class ObstacleMover : BaseMover
 {    
     [SerializeField]
     [Range(0.0f, 1.0f)]
@@ -16,22 +16,26 @@ public class Mover : BaseMover
 
     private CoroutineObject _spawnCoroutine;
 
-    private BaseMovableObject.Factory<BasePoolableMovableObject> _movableObjectsFactory;
+    private BaseMovableObject.Factory<BasePoolableObstacleMovableObject> _movableObjectsFactory;
 
     [Inject]
-    public void Constructor(BaseMovableObject.Factory<BasePoolableMovableObject> factory)
+    public void Constructor(BaseMovableObject.Factory<BasePoolableObstacleMovableObject> factory)
     {        
         _movableObjectsFactory = factory;
     }
 
-    public void Awake()
+    private void Awake()
     {
         _spawnCoroutine = new CoroutineObject(this, StartSpawnObstacles);
     }
 
+    private void Start()
+    {                
+        StartMove();
+    }     
+
     public override void StartMove() 
-    {
-        //StartCoroutine(StartObstacles());
+    {        
         _spawnCoroutine.Start();
     }
 

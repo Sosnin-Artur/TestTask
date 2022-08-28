@@ -6,12 +6,7 @@ using UnityEngine.AI;
 public abstract class BaseMover : MonoBehaviour
 {    
     [SerializeField]
-    protected List<Transform> Points;    
-    
-    private void Start()
-    {                
-        StartMove();
-    }     
+    protected List<Transform> Points;        
 
     public abstract void StartMove();    
 }

@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MovableObject : BaseMovableObject
+public class PlayerMovableObject : BaseMovableObject
 {    
     protected override void OnPointReaching()
-    {
-        CurrentPointIndex++;
-        if (CurrentPointIndex == Points.Count)
-        {
-            Destroy(gameObject);    
-            return;
-        }
+    {        
+        CurrentPointIndex++;        
         
-        Agent.destination = Points[CurrentPointIndex].position;
+        if (CurrentPointIndex == Points.Count)
+        {            
+            CurrentPointIndex = Points.Count - 1;
+            return;
+        }                
     }
 }

@@ -7,7 +7,7 @@ using Zenject;
 public class PoolInstaller : MonoInstaller
 {
     [SerializeField]
-    private BasePoolableMovableObject _movableObject;
+    private BasePoolableObstacleMovableObject _movableObject;
     [SerializeField]
     private int _poolInitialSize;
     [SerializeField]
@@ -16,14 +16,16 @@ public class PoolInstaller : MonoInstaller
     public override void InstallBindings()
     {                
         Container
-            .BindFactory<BasePoolableMovableObject, BaseMovableObject.Factory<BasePoolableMovableObject>>()                
-                .FromPoolableMemoryPool<BasePoolableMovableObject, MovableObjectPool>(poolBinder => poolBinder                    
+            .BindFactory<BasePoolableObstacleMovableObject,
+                         BaseMovableObject.Factory<BasePoolableObstacleMovableObject>>()                
+                .FromPoolableMemoryPool<BasePoolableObstacleMovableObject, MovableObjectPool>(
+                    poolBinder => poolBinder                    
                     .WithInitialSize(_poolInitialSize)
                     .FromComponentInNewPrefab(_movableObject)
                     .UnderTransformGroup(_transformGroupName));
     }
 
-    class MovableObjectPool : MonoPoolableMemoryPool<IMemoryPool, BasePoolableMovableObject>
+    class MovableObjectPool : MonoPoolableMemoryPool<IMemoryPool, BasePoolableObstacleMovableObject>
     {
     }
 }
