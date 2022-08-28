@@ -1,22 +1,19 @@
-using System.IO;
-using System.Security.Authentication.ExtendedProtection;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Zenject;
 
-public class PoolableMovableObject : BasePoolableMovableObject
+public class ObstacleMovableObject : BaseObstacleMovableObject
 {    
     protected override void OnPointReaching()
     {
         CurrentPointIndex++;
         if (CurrentPointIndex == Points.Count)
         {
-            Pool.Despawn(this);
+            Destroy(gameObject);    
             return;
         }
         
         Agent.destination = Points[CurrentPointIndex].position;
-    }    
+    }
 }
