@@ -13,10 +13,16 @@ public class PoolableObstacleMovableObject : BasePoolableObstacleMovableObject
         CurrentPointIndex++;
         if (CurrentPointIndex == Points.Count)
         {
-            Pool.Despawn(this);
+            OnReachingEndPoint();
             return;
         }
         
         Agent.destination = Points[CurrentPointIndex].position;
     }    
+
+    public override void OnReachingEndPoint()
+    {
+        base.OnReachingEndPoint();
+        Pool.Despawn(this);
+    }
 }

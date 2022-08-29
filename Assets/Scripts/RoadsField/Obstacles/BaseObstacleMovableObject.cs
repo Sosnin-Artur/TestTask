@@ -8,7 +8,7 @@ public abstract class BaseObstacleMovableObject : BaseMovableObject
     protected override void OnPointReaching()
     {
         CurrentPointIndex++;
-        if (CurrentPointIndex == Points.Count)
+        if (CurrentPointIndex >= Points.Count)
         {
             Destroy(gameObject);    
             return;

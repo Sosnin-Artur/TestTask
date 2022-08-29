@@ -13,9 +13,11 @@ public class ObstacleMover : BaseMover
     private float _appearencePercent;
     [SerializeField]    
     private float _appearenceCooldown;
+    [SerializeField]    
+    private float _initialSpeed;
 
     private CoroutineObject _spawnCoroutine;
-
+    private List<BasePoolableObstacleMovableObject> _currentObjects;
     private BaseMovableObject.Factory<BasePoolableObstacleMovableObject> _movableObjectsFactory;
 
     [Inject]
@@ -26,13 +28,20 @@ public class ObstacleMover : BaseMover
 
     private void Awake()
     {
-        _spawnCoroutine = new CoroutineObject(this, StartSpawnObstacles);
-    }
+        _currentObjects = new List<BasePoolableObstacleMovableObject>();    
+        _spawnCoroutine = new CoroutineObject(this, StartSpawnObstacles);        
+    }        
 
-    private void Start()
-    {                
+    public void Reset()
+    {
+        _spawnCoroutine.Stop();
+
+        for (int i = 0, length = _currentObjects.Count; i < length; i++)
+        {            
+            _currentObjects[i].Pool?.Despawn(_currentObjects[i]);
+        }
         StartMove();
-    }     
+    }
 
     public override void StartMove() 
     {        
@@ -49,12 +58,15 @@ public class ObstacleMover : BaseMover
             
             if (UnityEngine.Random.value <= _appearencePercent)
             {                                
-                var movablObject =  _movableObjectsFactory.Create();
-                movablObject.transform.position = Points[0].position;
-                movablObject.transform.SetParent(transform);
-                movablObject.gameObject.SetActive(true);
-                movablObject.Points = Points;
-                movablObject.StartMove();
+                var movableObject =  _movableObjectsFactory.Create();
+                _currentObjects.Add(movableObject);
+                movableObject.ReachingEndPointEvent += () => _currentObjects.Remove(movableObject);
+                movableObject.Agent.speed = _initialSpeed;
+                movableObject.transform.position = Points[0].position;
+                movableObject.transform.SetParent(transform);
+                movableObject.gameObject.SetActive(true);
+                movableObject.Points = Points;
+                movableObject.StartMove();
             }
         }        
 
