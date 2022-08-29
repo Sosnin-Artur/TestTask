@@ -35,6 +35,24 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hitting"",
+                    ""type"": ""Button"",
+                    ""id"": ""75d744ab-fd2b-4114-b15f-ce0cd68fba36"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""HittingPosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""71a82afe-16ec-4fc7-b324-996e1ab0acde"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -59,6 +77,50 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Walking"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d136e0d-98e4-44f6-900d-80fcd7c88a83"",
+                    ""path"": ""<Touchscreen>/primaryTouch"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hitting"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c57f6474-28bf-4030-9f32-9382955efbb6"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hitting"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2566a849-cd59-4668-8328-c9051951ebc8"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HittingPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ed407a62-f86f-4dd7-bf08-81b401c9b2e6"",
+                    ""path"": ""<Touchscreen>/position"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HittingPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -68,6 +130,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Walking = m_Player.FindAction("Walking", throwIfNotFound: true);
+        m_Player_Hitting = m_Player.FindAction("Hitting", throwIfNotFound: true);
+        m_Player_HittingPosition = m_Player.FindAction("HittingPosition", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -128,11 +192,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Walking;
+    private readonly InputAction m_Player_Hitting;
+    private readonly InputAction m_Player_HittingPosition;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Walking => m_Wrapper.m_Player_Walking;
+        public InputAction @Hitting => m_Wrapper.m_Player_Hitting;
+        public InputAction @HittingPosition => m_Wrapper.m_Player_HittingPosition;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -145,6 +213,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Walking.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWalking;
                 @Walking.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWalking;
                 @Walking.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWalking;
+                @Hitting.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHitting;
+                @Hitting.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHitting;
+                @Hitting.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHitting;
+                @HittingPosition.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHittingPosition;
+                @HittingPosition.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHittingPosition;
+                @HittingPosition.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHittingPosition;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -152,6 +226,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Walking.started += instance.OnWalking;
                 @Walking.performed += instance.OnWalking;
                 @Walking.canceled += instance.OnWalking;
+                @Hitting.started += instance.OnHitting;
+                @Hitting.performed += instance.OnHitting;
+                @Hitting.canceled += instance.OnHitting;
+                @HittingPosition.started += instance.OnHittingPosition;
+                @HittingPosition.performed += instance.OnHittingPosition;
+                @HittingPosition.canceled += instance.OnHittingPosition;
             }
         }
     }
@@ -159,5 +239,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnWalking(InputAction.CallbackContext context);
+        void OnHitting(InputAction.CallbackContext context);
+        void OnHittingPosition(InputAction.CallbackContext context);
     }
 }

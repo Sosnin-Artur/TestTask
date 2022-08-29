@@ -9,31 +9,23 @@ using UnityEngine.InputSystem;
 public class PlayerMover : BaseMover
 {        
     [SerializeField]
-    private BaseMovableObject _movableObject;
+    private BaseMovableObject _movableObject;    
 
-    private PlayerInputActions _controls;
+    public BaseMovableObject MovableObject => _movableObject;
 
     private void Awake()
     {
         _movableObject.Points = Points;      
-        _movableObject.transform.position = Points[0].position;
-
-        _controls = new PlayerInputActions();
-        _controls.Player.Walking.performed += context => StartMove();
-    }
-    
-    private void OnEnable() 
-    {
-        _controls.Enable();        
-    }
-    
-    private void OnDisable() 
-    {
-        _controls.Disable();        
+        _movableObject.transform.position = Points[0].position;                
     }    
 
+    public void StartMoveHandler(InputAction.CallbackContext context)
+    {
+        StartMove();
+    }
+
     public override void StartMove() 
-    {                  
+    {                          
         _movableObject.StartMove();
-    }        
+    }               
 }

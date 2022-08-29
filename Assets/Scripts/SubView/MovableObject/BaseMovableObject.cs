@@ -6,24 +6,34 @@ using Zenject;
 
 public abstract class BaseMovableObject : MonoBehaviour
 {    
+    public event Action ReachingEndPointEvent;
+
     [SerializeField]
     private NavMeshAgent _agent;
 
-    protected int CurrentPointIndex = 0;    
+    protected int CurrentPointIndex = 0;        
 
     public NavMeshAgent Agent => _agent;
     
     public List<Transform> Points { get; set; }            
-    
-    public void StartMove()
+
+    public virtual void StartMove()
     {        
         _agent.destination = Points[CurrentPointIndex].position;                
     }
+    
+    public virtual void StopMove()
+    {                
+        if (!Agent.isStopped)
+        {
+            Agent.isStopped = true;
+            Agent.ResetPath();
+        }        
+    }
 
-    public void Reset() 
+    public virtual void Reset() 
     {
-        Agent.isStopped = true;
-        Agent.ResetPath();
+        StopMove();
         CurrentPointIndex = 1;        
         transform.position = Points[0].position;        
     }
@@ -37,6 +47,11 @@ public abstract class BaseMovableObject : MonoBehaviour
     }
 
     protected abstract void OnPointReaching();
+
+    public virtual void OnReachingEndPoint()
+    {
+        ReachingEndPointEvent?.Invoke();
+    }
 
     public class Factory<T> : PlaceholderFactory<T> where T : BaseMovableObject
     {

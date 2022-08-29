@@ -6,13 +6,14 @@ public abstract class BasePoolableObstacleMovableObject : BaseObstacleMovableObj
 {    
     private IMemoryPool _pool;
 
-    protected IMemoryPool Pool => _pool;
+    public IMemoryPool Pool => _pool;
 
     public virtual void OnDespawned()
     {
         _pool = null;        
         Agent.isStopped = true;
         Agent.ResetPath();
+        gameObject.SetActive(false);
     }
 
     public virtual void OnSpawned(IMemoryPool pool)
