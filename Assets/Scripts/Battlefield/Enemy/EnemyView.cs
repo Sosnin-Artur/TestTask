@@ -19,8 +19,11 @@ public class EnemyView : MonoBehaviour
     public Health Health => _health;
     public Rigidbody Rigidbody => _rb;
 
+    private int _initHp;
+
     private void Awake()
     {        
+        _initHp = _health.Value;
         _health.DeathEvent += Die;
     }
 
@@ -28,7 +31,9 @@ public class EnemyView : MonoBehaviour
     {
         transform.position = _startPoint.position;     
         transform.rotation = Quaternion.identity;
+        _health.Value = _initHp;
         _movableObject.StopMove();   
+        gameObject.SetActive(true);
     }
 
     public void SendToTarget(Transform target)
@@ -45,8 +50,8 @@ public class EnemyView : MonoBehaviour
 
     private void Die()
     {        
-        DeathEvent?.Invoke();
-        gameObject.SetActive(false);
+        DeathEvent?.Invoke();        
         Reset();
+        gameObject.SetActive(false);
     }    
 }

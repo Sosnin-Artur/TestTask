@@ -165,6 +165,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rb: {fileID: 6701691083690998641}
   _health:
-    _value: 3
+    _value: 2
   _movableObject: {fileID: 1556678578827798169}
   _startPoint: {fileID: 0}

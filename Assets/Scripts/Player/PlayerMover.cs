@@ -25,7 +25,7 @@ public class PlayerMover : BaseMover
     }
 
     public override void StartMove() 
-    {                          
+    {                                  
         _movableObject.StartMove();
     }               
 }

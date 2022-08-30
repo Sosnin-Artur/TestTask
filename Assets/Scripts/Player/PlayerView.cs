@@ -18,9 +18,9 @@ public class PlayerView : MonoBehaviour
     [SerializeField]
     private InputAction _moveAction;
     [SerializeField]
-    private InputAction _attackAction;
+    private InputAction _clickAction;
     [SerializeField]
-    private InputAction _attackPosAction;
+    private InputAction _posAction;
     [SerializeField]
     private LayerMask _movableObstacleLayerMask;
     [SerializeField]
@@ -37,7 +37,8 @@ public class PlayerView : MonoBehaviour
         _mover.MovableObject.ReachingEndPointEvent += TurnOnFightControll;
 
         _moveAction.performed += _mover.StartMoveHandler;                        
-        _attackAction.performed += Attack;
+        _clickAction.performed += Attack;
+        _clickAction.performed += Interact;
     }
 
     private void OnEnable() 
@@ -45,27 +46,34 @@ public class PlayerView : MonoBehaviour
         TurnOnMovingControll();
     }
 
+    public void Reset() 
+    {
+        _mover.MovableObject.Reset();
+        _timer.Stop();        
+        TurnOnMovingControll();        
+    }
+
     private void TurnOnFightControll()
     {
         _moveAction.Disable();         
 
-        _attackAction.Enable();
-        _attackPosAction.Enable();                
+        _clickAction.Enable();
+        _posAction.Enable();                
     }        
 
     private void TurnOnMovingControll()
     {
         _moveAction.Enable(); 
 
-        _attackAction.Disable();
-        _attackPosAction.Disable();                
+        _clickAction.Disable();
+        _posAction.Disable();                
     }        
 
     private void Attack(InputAction.CallbackContext context) 
-    {                          
+    {                                  
         if (_isReadyForAttack)
         {
-            var position = _attackPosAction.ReadValue<Vector2>();        
+            var position = _posAction.ReadValue<Vector2>();        
 
             var ray = _camera.ScreenPointToRay(position);
             
@@ -80,6 +88,21 @@ public class PlayerView : MonoBehaviour
                 }
             }
         }        
+    }     
+
+    private void Interact(InputAction.CallbackContext context) 
+    {                                  
+        var position = _posAction.ReadValue<Vector2>();        
+
+        var ray = _camera.ScreenPointToRay(position);
+        
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {            
+            if (hit.collider.TryGetComponent<Chest>(out Chest chest))
+            {
+                chest.Open();                                                
+            }
+        }                
     }     
 
     private IEnumerator StartCooldownAttackTimer()
@@ -111,11 +134,12 @@ public class PlayerView : MonoBehaviour
     
     private void OnDisable() 
     {
-        _moveAction.Enable(); 
+        _moveAction.Disable(); 
         _moveAction.performed -= _mover.StartMoveHandler;                
 
-        _attackAction.Disable();
-        _attackPosAction.Disable();
-        _attackAction.performed -= Attack;
+        _clickAction.Disable();
+        _posAction.Disable();
+        _clickAction.performed -= Attack;
+        _clickAction.performed -= Interact;
     }        
 }

@@ -22,11 +22,13 @@ public class RoadsField : MonoBehaviour
         }
     } 
 
-    private void Reset()
+    public void Reset()
     {
+        _player.Reset();
+
         for (int i = 0, length = _obstacleMovers.Count; i < length; i++)
         {            
-            _obstacleMovers[i].Reset();
+            _obstacleMovers[i].Reset();            
         }
     }
 }
