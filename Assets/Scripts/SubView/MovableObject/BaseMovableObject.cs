@@ -16,7 +16,7 @@ public abstract class BaseMovableObject : MonoBehaviour
     public NavMeshAgent Agent => _agent;
     
     public List<Transform> Points { get; set; }            
-
+    
     public virtual void StartMove()
     {        
         _agent.destination = Points[CurrentPointIndex].position;                
@@ -37,7 +37,7 @@ public abstract class BaseMovableObject : MonoBehaviour
     public virtual void Reset() 
     {
         StopMove();
-        CurrentPointIndex = 1;        
+        CurrentPointIndex = 0;        
         transform.position = Points[0].position;        
     }
     

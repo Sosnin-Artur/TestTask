@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7782517853963541350}
   - component: {fileID: 5348268299646578322}
+  - component: {fileID: -4009493507184513524}
   m_Layer: 0
   m_Name: ProjectContext
   m_TagString: Untagged
@@ -44,7 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
-  _monoInstallers: []
+  _monoInstallers:
+  - {fileID: -4009493507184513524}
   _installerPrefabs: []
   _parentNewObjectsUnderContext: 1
   _editorReflectionBakingCoverageMode: 0
@@ -59,3 +61,18 @@ MonoBehaviour:
       _missingHandlerDefaultResponse: 2
       _requireStrictUnsubscribe: 0
       _defaultAsyncTickPriority: 1
+--- !u!114 &-4009493507184513524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8269426692619145530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b979a1556ba14749be75ed51d59549c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movableObject: {fileID: 6587125799150265908, guid: b9d1392421367b1448ee244de5af94e6, type: 3}
+  _poolInitialSize: 30
+  _transformGroupName: obtacles

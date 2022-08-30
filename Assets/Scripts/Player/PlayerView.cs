@@ -107,7 +107,7 @@ public class PlayerView : MonoBehaviour
 
     private IEnumerator StartCooldownAttackTimer()
     {
-        Debug.Log("culldown start");
+        Debug.Log("cooldown start");
         _isReadyForAttack = false;
         var waiter = new WaitForSecondsRealtime(_damager.CooldownAttack);
         var currentTime = 0.0f;
@@ -119,7 +119,7 @@ public class PlayerView : MonoBehaviour
         }
 
         _isReadyForAttack = true;
-        Debug.Log("culldown end");
+        Debug.Log("cooldown end");
     }
 
     private void OnCollisionEnter(Collision other) 

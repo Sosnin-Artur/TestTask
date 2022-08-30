@@ -38,6 +38,7 @@ public class ObstacleMover : BaseMover
 
         for (int i = 0, length = _currentObjects.Count; i < length; i++)
         {            
+            _currentObjects[i].StopMove();                               
             _currentObjects[i].Pool?.Despawn(_currentObjects[i]);
         }
         StartMove();
@@ -53,23 +54,23 @@ public class ObstacleMover : BaseMover
         var waiter = new WaitForSecondsRealtime(_appearenceCooldown);
 
         while (true)
-        {
-            yield return waiter;
-            
+        {            
             if (UnityEngine.Random.value <= _appearencePercent)
             {                                
                 var movableObject =  _movableObjectsFactory.Create();
                 _currentObjects.Add(movableObject);
+                movableObject.StopMove();
+                movableObject.gameObject.SetActive(false);
                 movableObject.ReachingEndPointEvent += () => _currentObjects.Remove(movableObject);
                 movableObject.Agent.speed = _initialSpeed;
-                movableObject.transform.position = Points[0].position;
-                movableObject.transform.SetParent(transform);
-                movableObject.gameObject.SetActive(true);
                 movableObject.Points = Points;
+                movableObject.transform.position = Points[0].position;                                
+                movableObject.transform.SetParent(transform);
+                movableObject.gameObject.SetActive(true);                                
                 movableObject.StartMove();
             }
+            
+            yield return waiter;            
         }        
-
-    }
-    
+    }    
 }

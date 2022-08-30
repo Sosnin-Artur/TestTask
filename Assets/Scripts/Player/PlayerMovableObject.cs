@@ -5,6 +5,12 @@ using UnityEngine.AI;
 
 public class PlayerMovableObject : BaseMovableObject
 {            
+    public override void Reset()
+    {
+        base.Reset();
+        Agent.destination = Points[0].position;
+    }
+
     protected override void OnPointReaching()
     {        
         CurrentPointIndex++;        
