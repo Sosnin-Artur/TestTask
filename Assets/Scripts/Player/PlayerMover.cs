@@ -25,8 +25,7 @@ public class PlayerMover : BaseMover
     }
 
     public override void StartMove() 
-    {                          
-        Debug.Log("check");
+    {                                  
         _movableObject.StartMove();
     }               
 }

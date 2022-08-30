@@ -70,8 +70,7 @@ public class PlayerView : MonoBehaviour
     }        
 
     private void Attack(InputAction.CallbackContext context) 
-    {                          
-        Debug.Log("attack");
+    {                                  
         if (_isReadyForAttack)
         {
             var position = _posAction.ReadValue<Vector2>();        
