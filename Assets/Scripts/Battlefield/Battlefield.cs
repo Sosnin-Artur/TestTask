@@ -10,13 +10,15 @@ public class Battlefield : MonoBehaviour
     private List<EnemyView> _enemies;
     [SerializeField]
     private PlayerView _player;
+    [SerializeField]
+    private Chest _chest;
 
     private int _deadEnemiesCount = 0;    
     
     private void Awake()
     {
         _player.Mover.MovableObject.ReachingEndPointEvent += StartAttack;
-        _player.DeathEvent += ResetEnemies;
+        _player.DeathEvent += Reset;
 
         for (int i = 0, length = _enemies.Count; i < length; i++)
         {            
@@ -26,8 +28,10 @@ public class Battlefield : MonoBehaviour
 
     public void Reset()
     {
-        _deadEnemiesCount = 0;        
-        
+        _chest.gameObject.SetActive(false);
+
+        _deadEnemiesCount = 0;                
+
         ResetEnemies();
     }
 
@@ -44,8 +48,8 @@ public class Battlefield : MonoBehaviour
         _deadEnemiesCount++;
 
         if (_deadEnemiesCount == _enemies.Count)
-        {
-            Debug.Log("player winning");            
+        {                     
+            _chest.gameObject.SetActive(true);
         }
     }
 

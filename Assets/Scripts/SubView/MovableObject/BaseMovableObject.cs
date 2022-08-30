@@ -23,12 +23,15 @@ public abstract class BaseMovableObject : MonoBehaviour
     }
     
     public virtual void StopMove()
-    {                
-        if (!Agent.isStopped)
+    {    
+        if (gameObject.activeInHierarchy)
         {
-            Agent.isStopped = true;
-            Agent.ResetPath();
-        }        
+            if (!Agent.isStopped)
+            {
+                Agent.isStopped = true;
+                Agent.ResetPath();
+            }        
+        }                    
     }
 
     public virtual void Reset() 
